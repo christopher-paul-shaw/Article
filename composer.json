@@ -1,0 +1,27 @@
+{
+    "name": "christopher-paul-shaw/article",
+    "description": "FileBased Article Management",
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.3"
+    },
+    "authors": [
+        {
+            "name": "Chris Shaw",
+            "email": "composer@chris-shaw.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "CPS\\": "./src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CPS\\Test\\": "./test/unit"
+        }
+    }
+}
