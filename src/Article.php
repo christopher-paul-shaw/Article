@@ -32,8 +32,11 @@ class Article {
 		
 		$fileContent = file_get_contents($currentFile);
 
+		$name = $name ? $name = str_replace('/','',$file);
+		
 		$data = [
-			'name' => isset($name) ? $name : $file,
+			'name' => $name,
+			'file' => $file,
 			'content' => $fileContent,
 			'date' => isset($date) ? $date : false,
 		];
