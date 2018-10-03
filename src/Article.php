@@ -32,7 +32,7 @@ class Article {
 		
 		$fileContent = file_get_contents($currentFile);
 
-		$name = $name ? $name = str_replace('/','',$file);
+		$name = $name ? $name : str_replace('/','',$file);
 		
 		$data = [
 			'name' => $name,
