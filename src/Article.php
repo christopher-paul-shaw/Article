@@ -25,23 +25,25 @@ class Article {
 		$currentFile = $this->path.'/'.$file;
 
 		foreach ($this->extentions as $extention) {
-			if(@file_get_contents($currentFile.'.'.$extention)!==false){
+			if(file_exists($currentFile.'.'.$extention)){
 				$currentFile.='.'.$extention;
 				break;
 			}
 		}
 
-		$fileContent = @file_get_contents($currentFile);
-		if($fileContent === false) return false;
-
+		
+		if (file_exists($currentFile)) { 
+			return false;
+		}
+		
+		$fileContent = file_get_contents($currentFile);
 		if (strstr($file, '__')) {
 			$parts = explode('__',$file);
 			$date = $parts[0];
 			$name = $parts[1];
 		}
 
-		$name="";
-		$name = $name ? $name : str_replace('/','',$file);
+		$name = isset($name) ? $name : str_replace('/','',$file);
 		$name = str_replace('.'.$extention,'',$name);
 
 		$data = [
