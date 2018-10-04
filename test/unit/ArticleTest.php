@@ -29,10 +29,24 @@ class ArticleTest extends TestCase {
     public function testICanLoadArticle () {
         $article = new Article(__DIR__.'/../../data/articles/');
         $list = $article->list();
-        $file = array_keys($list)[0];
-        $load = $article->load($file);
+        $file = reset($list);
+        $load = $article->load($file['file']);
         $this->assertTrue(is_array($load));
     }
+
+    public function testICanLoadArticleByName () {
+        $article = new Article(__DIR__.'/../../data/articles/');
+        $list = $article->list();
+        $file = reset($list);
+        $load = $article->load($file['name']);
+        $this->assertTrue(is_array($load));
+    }
+    
+	public function testICanitLoadMissingArticle () {
+        	$article = new Article(__DIR__.'/../../data/articles/');
+        	$load = $article->load('missing-article');
+        	$this->assertFalse($load);
+    	}
 
 }
 

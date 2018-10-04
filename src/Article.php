@@ -31,11 +31,10 @@ class Article {
 			}
 		}
 
-		
-		if (file_exists($currentFile)) { 
+		if (!file_exists($currentFile)) { 
 			return false;
 		}
-		
+
 		$fileContent = file_get_contents($currentFile);
 		if (strstr($file, '__')) {
 			$parts = explode('__',$file);
@@ -58,13 +57,15 @@ class Article {
 
 	public function list ($search=false) {
 
+		$this->files = false;
+
 		$files = new \DirectoryIterator($this->path);
+
 		foreach($files as $file) {
 
 			if (!in_array($file->getExtension(),$this->extentions)) continue;
 
 			$filename = $file->getFilename();
-
 			if ($search && !strstr($filename, $search)) continue;
 
 			$article = $this->load($file);
@@ -73,8 +74,10 @@ class Article {
 			$this->files[$filename] = $article;
 		}
 
-		krsort($this->files);
+		if (is_array($this->files)) {
+			krsort($this->files);
+		}
+
 		return $this->files;
 	}
-
 }
