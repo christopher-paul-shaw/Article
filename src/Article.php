@@ -75,7 +75,7 @@ class Article {
 		}
 
 		if (is_array($this->files)) {
-			krsort($this->files);
+			ksort($this->files);
 		}
 
 		return $this->files;
