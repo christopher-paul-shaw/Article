@@ -5,6 +5,14 @@ use PHPUnit\Framework\TestCase;
 
 class ArticleTest extends TestCase {
 
+	public function setUp () {
+		
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$list = $article->list();
+		print_r($list);die;
+		$this->total_articles = count($list);
+	}
+
     	public function testICanSetUsingConstructor () {
         	$dir = './dir/';
         	$ext = ['a','b'];
@@ -17,13 +25,15 @@ class ArticleTest extends TestCase {
 	public function testICanListArticles () {
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$list = $article->list();
-		$this->assertTrue(count($list) == 3);
+		$this->assertTrue(count($list) == $this->total_articles);
 	}
 
 	public function testICanSearchArticles () {
         	$article = new Article(__DIR__.'/../../data/articles/');
         	$list = $article->list("example");
-        	$this->assertTrue(count($list) != 3);
+
+		var_dump(count($list), $this->total_articles);
+        	$this->assertTrue(count($list) < $this->total_articles);
 	}
 
 	public function testICanLoadArticle () {

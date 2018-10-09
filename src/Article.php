@@ -30,16 +30,30 @@ class Article {
 				break;
 			}
 		}
+		
 
-		if (!file_exists($currentFile)) { 
+		if (!file_exists($currentFile)) {
+			$result = $this->list($file); 
+			if($result) {
+				$x = reset($result);
+			}
 			return false;
 		}
 
 		$fileContent = file_get_contents($currentFile);
+
+
+
 		if (strstr($file, '__')) {
 			$parts = explode('__',$file);
 			$date = $parts[0];
 			$name = $parts[1];
+
+			if (count($parts) == 3) {
+				$category = $parts[0];
+				$date = $parts[1];
+				$name = $parts[2];
+			}
 		}
 
 		$name = isset($name) ? $name : str_replace('/','',$file);
@@ -50,6 +64,7 @@ class Article {
 			'file' => $file,
 			'content' => $fileContent,
 			'date' => isset($date) ? $date : false,
+			'category' => isset($category) ? $category : false,
 		];
 
 		return $data;
