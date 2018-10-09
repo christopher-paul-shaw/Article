@@ -22,26 +22,26 @@ class Article {
 		$file = str_replace(' ','-', $file);
 		$file = strtolower($file);
 
-		$currentFile = $this->path.'/'.$file;
+		$this->currentFile = $this->path.'/'.$file;
 
 		foreach ($this->extentions as $extention) {
-			if(file_exists($currentFile.'.'.$extention)){
-				$currentFile.='.'.$extention;
+			if(file_exists($this->currentFile.'.'.$extention)){
+				$this->currentFile.='.'.$extention;
 				break;
 			}
 		}
-		
-
-		if (!file_exists($currentFile)) {
-			$result = $this->list($file); 
+	
+		if (!file_exists($this->currentFile)) {
+			$result = $this->list($file);	
 			if($result) {
 				$x = reset($result);
+				return $x;
+	
 			}
 			return false;
 		}
 
-		$fileContent = file_get_contents($currentFile);
-
+		$fileContent = file_get_contents($this->currentFile);
 
 
 		if (strstr($file, '__')) {
@@ -75,9 +75,7 @@ class Article {
 		$this->files = false;
 
 		$files = new \DirectoryIterator($this->path);
-
 		foreach($files as $file) {
-
 			if (!in_array($file->getExtension(),$this->extentions)) continue;
 
 			$filename = $file->getFilename();
@@ -85,10 +83,9 @@ class Article {
 
 			$article = $this->load($file);
 			if(!$article) continue;
-
 			$this->files[$filename] = $article;
 		}
-
+		
 		if (is_array($this->files)) {
 			ksort($this->files);
 		}

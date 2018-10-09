@@ -9,7 +9,6 @@ class ArticleTest extends TestCase {
 		
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$list = $article->list();
-		print_r($list);die;
 		$this->total_articles = count($list);
 	}
 
@@ -31,8 +30,6 @@ class ArticleTest extends TestCase {
 	public function testICanSearchArticles () {
         	$article = new Article(__DIR__.'/../../data/articles/');
         	$list = $article->list("example");
-
-		var_dump(count($list), $this->total_articles);
         	$this->assertTrue(count($list) < $this->total_articles);
 	}
 
@@ -50,6 +47,7 @@ class ArticleTest extends TestCase {
         	$file = reset($list);
         	$load = $article->load($file['name']);
         	$this->assertTrue(is_array($load));
+		$this->assertTrue(strstr($article->currentFile,'.md') !== FALSE);
 	}
 	
 	public function testICanitLoadMissingArticle () {
