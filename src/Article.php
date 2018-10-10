@@ -24,12 +24,6 @@ class Article {
 
 		$this->currentFile = $this->path.'/'.$file;
 
-		foreach ($this->extentions as $extention) {
-			if(file_exists($this->currentFile.'.'.$extention)){
-				$this->currentFile.='.'.$extention;
-				break;
-			}
-		}
 	
 		if (!file_exists($this->currentFile)) {
 			$result = $this->list($file);	
@@ -57,7 +51,7 @@ class Article {
 		}
 
 		$name = isset($name) ? $name : str_replace('/','',$file);
-		$name = str_replace('.'.$extention,'',$name);
+		$name = explode('.',$name)[0];
 
 		$data = [
 			'name' => $name,
