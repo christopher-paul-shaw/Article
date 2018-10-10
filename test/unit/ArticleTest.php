@@ -55,5 +55,17 @@ class ArticleTest extends TestCase {
         	$load = $article->load('missing-article');
         	$this->assertFalse($load);
     	}
-	
+
+	public function testICanGetCategortyList () { 
+		$categoriesFile = __DIR__.'/../../data/articles/categories.json';
+		if (file_exists($categoriesFile)) {
+			unlink($categoriesFile);
+		}
+
+        	$article = new Article(__DIR__.'/../../data/articles/');
+        	$categories = $article->getCategories();
+
+		$this->assertTrue(is_array($categories));
+		$this->assertTrue(file_exists($categoriesFile));
+	}	
 }
