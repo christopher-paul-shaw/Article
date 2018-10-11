@@ -10,6 +10,14 @@ class ArticleTest extends TestCase {
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$list = $article->list();
 		$this->total_articles = count($list);
+		$this->categoriesFile = __DIR__.'/../../data/articles/categories.json';
+	}
+
+	public function tearDown () {
+
+		if (file_exists($this->categoriesFile)) {
+			unlink($this->categoriesFile);
+		}
 	}
 
     	public function testICanSetUsingConstructor () {
@@ -55,5 +63,26 @@ class ArticleTest extends TestCase {
         	$load = $article->load('missing-article');
         	$this->assertFalse($load);
     	}
+
+	public function testICanGetCategortyList () { 
+
+        	$article = new Article(__DIR__.'/../../data/articles/');
+        	$categories = $article->getCategories();
+
+		$this->assertTrue(is_array($categories));
+		$this->assertTrue(file_exists($this->categoriesFile));
+
+        	$article = new Article(__DIR__.'/../../data/articles/');
+        	$categories = $article->getCategories();
+		
+	}	
 	
+	public function testICanitGetAFakeCategortyList () { 
+
+        	$article = new Article(__DIR__.'/../../data/empty-articles/');
+        	$categories = $article->getCategories();
+
+		$this->assertFalse($categories);
+		
+	}	
 }

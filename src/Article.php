@@ -15,6 +15,7 @@ class Article {
 			$this->extentions = $extentions;
 		}
 
+		$this->categoriesFile = $this->path.'/categories.json'; 
 	}
 
 	public function load ($file) {
@@ -86,4 +87,29 @@ class Article {
 
 		return $this->files;
 	}
+
+	public function getCategories () {
+	
+		if (file_exists($this->categoriesFile) 
+		&& filemtime($this->categoriesFile) > (time() - 3600)) {
+			return json_decode($this->categoriesFile);
+		}
+
+		$articles = $this->list();
+		$categories = false;
+		if (is_array($articles)) {
+			foreach ($articles as $a) {
+				if (empty($a['category'])) continue;
+				$categories[] = $a['category'];
+			}
+		}
+
+		if (!is_array($categories)) {
+			return false;
+		}
+
+		file_put_contents($this->categoriesFile, json_encode($categories));
+		return $categories;
+	}
+
 }
