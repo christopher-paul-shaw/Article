@@ -6,11 +6,16 @@ use PHPUnit\Framework\TestCase;
 class ArticleTest extends TestCase {
 
 	public function setUp () {
+		$this->dir = __DIR__.'/../../data/articles/';
 		
-		$article = new Article(__DIR__.'/../../data/articles/');
+		file_put_contents("{$this->dir}test.md",'Test Content');
+		file_put_contents("{$this->dir}2018-01-01__test.md",'Test Content');
+		file_put_contents("{$this->dir}category__2018-01-02__test.md",'Test Content');
+
+		$article = new Article($this->dir);
 		$list = $article->list();
 		$this->total_articles = count($list);
-		$this->categoriesFile = __DIR__.'/../../data/articles/categories.json';
+		$this->categoriesFile = $this->dir.'categories.json';
 	}
 
 	public function tearDown () {
@@ -79,7 +84,11 @@ class ArticleTest extends TestCase {
 	
 	public function testICanitGetAFakeCategortyList () { 
 
-        	$article = new Article(__DIR__.'/../../data/empty-articles/');
+		unlink("{$this->dir}test.md");
+		unlink("{$this->dir}2018-01-01__test.md");
+		unlink("{$this->dir}category__2018-01-02__test.md");
+
+        	$article = new Article(__DIR__.'/../../data/articles/');
         	$categories = $article->getCategories();
 
 		$this->assertFalse($categories);
