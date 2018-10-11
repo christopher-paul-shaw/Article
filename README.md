@@ -13,11 +13,12 @@ This class interacts with articles stored within files on disk, and allows listi
 
     # Load (View) 
     $view = $article->load("your-file");
-
-
+    
+    # Get List Of Categories
+    $categories = $article->getCategories();
 
 # Test
 As features are added, there will be new tests to prove they work as intended. 
 You can run the tests yourself using the following command.
 
-    vendor/bin/phpunit --bootstrap vendor/autoload.php test/unit/
+    vendor/bin/phpunit test
