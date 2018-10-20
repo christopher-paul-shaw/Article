@@ -15,7 +15,7 @@ class Article {
 			$this->extentions = $extentions;
 		}
 
-		$this->categoriesFile = $this->path.'/categories.json'; 
+		$this->cacheFile = $this->path.'/cache.dat'; 
 	}
 
 	public function load ($file) {
@@ -88,28 +88,20 @@ class Article {
 		return $this->files;
 	}
 
-	public function getCategories () {
+	public function getCache () {
 	
-		if (file_exists($this->categoriesFile) 
-		&& filemtime($this->categoriesFile) > (time() - 3600)) {
-			return json_decode($this->categoriesFile);
+		if (file_exists($this->cacheFile) 
+		&& filemtime($this->cacheFile) > (time() - 3600)) {
+			return unserialize($this->cacheFile);
 		}
-
-		$articles = $this->list();
-		$categories = false;
-		if (is_array($articles)) {
-			foreach ($articles as $a) {
-				if (empty($a['category'])) continue;
-				$categories[] = $a['category'];
-			}
-		}
-
-		if (!is_array($categories)) {
-			return false;
-		}
-
-		file_put_contents($this->categoriesFile, json_encode($categories));
-		return $categories;
+                return false;
+		
 	}
-
+        public function setCache ($articles) {
+	
+		
+		file_put_contents($this->cacheFile, serialize($articles));
+	}
+		
+		
 }
