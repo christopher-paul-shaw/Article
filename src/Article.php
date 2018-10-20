@@ -65,41 +65,60 @@ class Article {
 		return $data;
 	}
 
+
 	public function list ($search=false) {
 
-		$this->files = false;
+		$articles = $this->getCache();
+
+		if (!$articles) {
+			$articles = $this->scan($search);
+			$this->setCache($articles);
+		}
+
+		foreach ($articles as $i => $a) {
+			if ($search) {
+				if (!strstr($a['name'],$search)) unset($articles[$i]);
+			}
+		}
+		print_r($articles);
+		die;
+
+
+
+	}
+
+	public function scan ($search) {
+
+		$list = false;
 
 		$files = new \DirectoryIterator($this->path);
 		foreach($files as $file) {
 			if (!in_array($file->getExtension(),$this->extentions)) continue;
-
 			$filename = $file->getFilename();
-			if ($search && !strstr($filename, $search)) continue;
-
+			
 			$article = $this->load($file);
 			if(!$article) continue;
-			$this->files[$filename] = $article;
+			$list[$filename] = $article;
 		}
 		
-		if (is_array($this->files)) {
-			ksort($this->files);
+		if (is_array($list)) {
+			ksort($list);
 		}
 
-		return $this->files;
+		return $list;
 	}
 
 	public function getCache () {
 	
 		if (file_exists($this->cacheFile) 
 		&& filemtime($this->cacheFile) > (time() - 3600)) {
-			return unserialize($this->cacheFile);
+			return unserialize(file_get_contents($this->cacheFile));
 		}
                 return false;
 		
 	}
+
         public function setCache ($articles) {
-	
-		
 		file_put_contents($this->cacheFile, serialize($articles));
 	}
 		

@@ -68,25 +68,4 @@ class ArticleTest extends TestCase {
         	$this->assertFalse($load);
     	}
 
-	public function testICanGetCategortyList () { 
-        	$article = new Article(__DIR__.'/../../data/articles/');
-        	$categories = $article->getCategories();
-
-		$this->assertTrue(is_array($categories));
-		$this->assertTrue(file_exists($this->categoriesFile));
-
-        	$article = new Article(__DIR__.'/../../data/articles/');
-        	$categories = $article->getCategories();	
-	}	
-	
-	public function testICanitGetAFakeCategortyList () { 
-		unlink("{$this->dir}test.md");
-		unlink("{$this->dir}2018-01-01__test.md");
-		unlink("{$this->dir}category__2018-01-02__test.md");
-
-        	$article = new Article(__DIR__.'/../../data/articles/');
-        	$categories = $article->getCategories();
-
-		$this->assertFalse($categories);	
-	}	
 }
