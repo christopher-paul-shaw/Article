@@ -5,7 +5,7 @@ class Article {
 	public $path = __DIR__;
 	public $extentions = ['md'];
 	public $category = false;
-	public $update_cache = false;
+	public $disable_cache = false;
 
 	public function __construct ($path=false, $extentions=false) {
 	
@@ -121,7 +121,7 @@ class Article {
 	}
 
 	public function getCache () {
-		if ($this->update_cache) {
+		if ($this->disable_cache) {
 			return false;
 		}
 	
@@ -133,9 +133,20 @@ class Article {
 		
 	}
 	
+	public function clearCache () {
+		if ($this->disable_cache) {
+			return false;
+		}
+		unlink($this->cacheFile);
+	}
+	
 	public function setCache ($articles) {
+		if ($this->disable_cache) {
+			return false;
+		}
 		file_put_contents($this->cacheFile, serialize($articles));
 	}
+	
 	
 	
 		
