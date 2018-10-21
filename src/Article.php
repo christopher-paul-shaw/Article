@@ -6,6 +6,7 @@ class Article {
 	public $extentions = ['md'];
 	public $category = false;
 	public $disable_cache = false;
+	public $cache_expires = 43200;
 
 	public function __construct ($path=false, $extentions=false) {
 	
@@ -78,7 +79,6 @@ class Article {
 		return $data;
 	}
 
-
 	public function list ($search=false) {
 		
 		$articles = $this->getCache();
@@ -121,16 +121,11 @@ class Article {
 	}
 
 	public function getCache () {
-		if ($this->disable_cache) {
+		if ($this->disable_cache || !file_exists($this->cacheFile) || filemtime($this->cacheFile) < (time() - $this->cache_expires) ) {
 			return false;
 		}
-	
-		if (file_exists($this->cacheFile) 
-		&& filemtime($this->cacheFile) > (time() - 3600)) {
-			return unserialize(file_get_contents($this->cacheFile));
-		}
-                return false;
-		
+
+		return unserialize(file_get_contents($this->cacheFile));	
 	}
 	
 	public function clearCache () {
