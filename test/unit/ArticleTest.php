@@ -8,7 +8,18 @@ class ArticleTest extends TestCase {
 	public function setUp () {
 		$this->dir = __DIR__.'/../../data/articles/';
 		
-		file_put_contents("{$this->dir}test.md",'Test Content');
+		$test = <<<HEREDOC
+		This is the Summary
+		--PAGE--
+		This is the content
+		--DATA--
+		{
+			"category": "test",
+			"author": "Chris Shaw"
+		}
+HEREDOC;
+
+		file_put_contents("{$this->dir}test.md",$test);
 		file_put_contents("{$this->dir}2018-01-01__test.md",'Test Content');
 		file_put_contents("{$this->dir}category__2018-01-02__test.md",'Test Content');
 
