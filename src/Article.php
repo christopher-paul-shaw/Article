@@ -95,7 +95,7 @@ class Article {
 				if ($a['category'] != $this->category) unset($articles[$i]);
 			}
 		}
-		print_r($articles);
+		return $articles;
 		
 
 	}
