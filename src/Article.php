@@ -8,7 +8,7 @@ class Article {
 	public $update_cache = false;
 
 	public function __construct ($path=false, $extentions=false) {
-		$this->update_cache = true;
+	
 		if($path) {
 			$this->path = $path;
 		}
@@ -22,12 +22,10 @@ class Article {
 
 	public function load ($file) {
 
-
 		$summary = '';
 		$content = '';
 		$date = '';
-
-
+		
 		$file = str_replace(' ','-', $file);
 		$file = strtolower($file);
 
@@ -82,7 +80,7 @@ class Article {
 
 
 	public function list ($search=false) {
-	#	$search = "test";
+		
 		$articles = $this->getCache();
 		if (!$articles) {
 			$articles = $this->scan();
@@ -93,15 +91,12 @@ class Article {
 			if ($search) {
 				if (!strstr($a['name'],$search)) unset($articles[$i]);
 			}
-
 			if ($this->category) {
 				if ($a['category'] != $this->category) unset($articles[$i]);
 			}
 		}
 		print_r($articles);
-		die;
-
-
+		
 
 	}
 
@@ -126,7 +121,6 @@ class Article {
 	}
 
 	public function getCache () {
-return false;
 		if ($this->update_cache) {
 			return false;
 		}
@@ -138,10 +132,12 @@ return false;
                 return false;
 		
 	}
-
+	
 	public function setCache ($articles) {
 		file_put_contents($this->cacheFile, serialize($articles));
 	}
+	
+	
 		
 		
 }
