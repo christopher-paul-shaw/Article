@@ -22,17 +22,11 @@ HEREDOC;
 		file_put_contents("{$this->dir}test.md",$test);
 		file_put_contents("{$this->dir}2018-01-01__test.md",'Test Content');
 		file_put_contents("{$this->dir}category__2018-01-02__test.md",'Test Content');
-
+		
 		$article = new Article($this->dir);
 		$list = $article->list();
 		$this->total_articles = count($list);
-		$this->categoriesFile = $this->dir.'categories.json';
-	}
 
-	public function tearDown () {
-		if (file_exists($this->categoriesFile)) {
-			unlink($this->categoriesFile);
-		}
 	}
 
 	public function testICanSetUsingConstructor () {
@@ -79,16 +73,39 @@ HEREDOC;
 		$this->assertFalse($load);
 	}
 
-	public function testICanSetCache () {}
+	public function testICanSetCache () {
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$load = $article->list();
 
-	public function testICantSetCacheWhenDisabled() {}
+		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
+		$this->assertTrue(!empty($cacheFile));
+	}
 
-	public function testICanGetCache () {}
+	public function testICantSetCacheWhenDisabled() {	
+		file_put_contents(__DIR__.'/../../data/articles/cache.dat','');
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$article->disable_cache = true;
+		$load = $article->list();
 
-	public function testICantGetCacheWhenDisabled () {}
+		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
+		$this->assertTrue(empty($cacheFile));
+	}
 
-	public function testICanClearCache () {}
+	public function testICanClearCache () {
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$article->clearCache();
 
-	public function testICantClearCacheWhenDisabled () {}
-	
+		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
+		$this->assertTrue($cacheFile !== FALSE);
+	}
+
+	public function testICanClearCacheWhenDisabled () {
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$article->disable_cache = true;
+		$article->clearCache();
+
+		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
+		$this->assertTrue($cacheFile === FALSE);
+	}
+		
 }

@@ -132,7 +132,7 @@ class Article {
 		if ($this->disable_cache) {
 			return false;
 		}
-		unlink($this->cacheFile);
+		file_put_contents($this->cacheFile,'');
 	}
 	
 	public function setCache ($articles) {
