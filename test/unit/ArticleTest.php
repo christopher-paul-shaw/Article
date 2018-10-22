@@ -36,12 +36,12 @@ HEREDOC;
 	}
 
 	public function testICanSetUsingConstructor () {
-	$dir = './dir/';
-	$ext = ['a','b'];
+		$dir = './dir/';
+		$ext = ['a','b'];
 
-	$article = new Article($dir,$ext);
-	$this->assertEquals($article->path,$dir);
-	$this->assertEquals($article->extentions,$ext);
+		$article = new Article($dir,$ext);
+		$this->assertEquals($article->path,$dir);
+		$this->assertEquals($article->extentions,$ext);
 	}
 
 	public function testICanListArticles () {
@@ -73,10 +73,22 @@ HEREDOC;
 		$this->assertTrue(strstr($load['file'],'.md') !== FALSE);
 	}
 	
-	public function testICanitLoadMissingArticle () {
+	public function testICantLoadMissingArticle () {
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$load = $article->load('missing-article');
 		$this->assertFalse($load);
 	}
 
+	public function testICanSetCache () {}
+
+	public function testICantSetCacheWhenDisabled() {}
+
+	public function testICanGetCache () {}
+
+	public function testICantGetCacheWhenDisabled () {}
+
+	public function testICanClearCache () {}
+
+	public function testICantClearCacheWhenDisabled () {}
+	
 }
