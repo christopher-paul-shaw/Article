@@ -107,5 +107,22 @@ HEREDOC;
 		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
 		$this->assertTrue($cacheFile === FALSE);
 	}
+
+	public function testICanGetCategoryList () {
+
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$categories = $article->getCategoryList();
+		$this->assertTrue(is_array($categories));
+
+	}
+
+	public function testICanLimitByCategory () {
+
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$article->category = 'general';
+		$list = $article->list();
+		$count = count($list);
+		$this->assertTrue($count == 1);
+	}
 		
 }
