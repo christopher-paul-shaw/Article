@@ -18,7 +18,8 @@ class Article {
 			$this->extentions = $extentions;
 		}
 
-		$this->cacheFile = $this->path.'/cache.dat'; 
+		$this->cacheFile = $this->path.'/cache.dat';
+		$this->categoriesFile = $this->path.'/categories.dat'; 
 	}
 
 	public function load ($file) {
@@ -120,6 +121,22 @@ class Article {
 		return $list;
 	}
 
+	public function getCategoryList () {
+		if (file_exists($this->categoriesFile) && filemtime($this->categoriesFile) > (time() - $this->cache_expires)) {
+			$content = file_get_contents($this->categoriesFile);
+			if (!empty($content)) return unserialize($content);	
+		}
+
+		$results = $this->list();
+		$categories = false;
+		foreach ($results as $r) {
+			$categories[$r['category']] = $r['category'];
+		}
+
+		file_put_contents($this->categoriesFile, serialize($categories));
+		return $categories;
+	}
+
 	public function getCache () {
 		if ($this->disable_cache || !file_exists($this->cacheFile) || filemtime($this->cacheFile) < (time() - $this->cache_expires) ) {
 			return false;
@@ -133,6 +150,7 @@ class Article {
 			return false;
 		}
 		file_put_contents($this->cacheFile,'');
+
 	}
 	
 	public function setCache ($articles) {

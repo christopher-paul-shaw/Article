@@ -18,7 +18,8 @@ class ArticleTest extends TestCase {
 			"author": "Chris Shaw"
 		}
 HEREDOC;
-
+		file_put_contents("{$this->dir}cache.dat",'');
+		file_put_contents("{$this->dir}categories.dat",'');
 		file_put_contents("{$this->dir}test.md",$test);
 		file_put_contents("{$this->dir}2018-01-01__test.md",'Test Content');
 		file_put_contents("{$this->dir}category__2018-01-02__test.md",'Test Content');
@@ -96,33 +97,30 @@ HEREDOC;
 		$article->clearCache();
 
 		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
-		$this->assertTrue($cacheFile !== FALSE);
+		$this->assertTrue(empty($cacheFile));
 	}
 
-	public function testICanClearCacheWhenDisabled () {
+	public function testICantClearCacheWhenDisabled () {
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$article->disable_cache = true;
 		$article->clearCache();
 
 		$cacheFile = file_get_contents(__DIR__.'/../../data/articles/cache.dat');
-		$this->assertTrue($cacheFile === FALSE);
+		$this->assertTrue(!empty($cacheFile));
 	}
 
 	public function testICanGetCategoryList () {
-
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$categories = $article->getCategoryList();
 		$this->assertTrue(is_array($categories));
-
 	}
 
 	public function testICanLimitByCategory () {
-
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$article->category = 'general';
 		$list = $article->list();
 		$count = count($list);
-		$this->assertTrue($count == 1);
+		$this->assertTrue($count > 0 && $count < $this->total_articles);
 	}
 		
 }
