@@ -2,6 +2,7 @@
 namespace CPS;
 
 class Article {
+
 	public $path = __DIR__;
 	public $extentions = ['md'];
 	public $category = false;
@@ -52,7 +53,7 @@ class Article {
 		}
 
 		$name = isset($name) ? $name : str_replace('/','',$file);
-		$name = explode('.',$name)[0];
+		$name = str_replace(strrchr($name,'.'),'', $name);
 		$content = $fileContent;
 
 		if (strstr($fileContent, '--PAGE--')) {
@@ -81,24 +82,25 @@ class Article {
 	}
 
 	public function list ($search=false) {
-		
 		$articles = $this->getCache();
 		if (!$articles) {
 			$articles = $this->scan();
 			$this->setCache($articles);
 		}
-
+		
 		foreach ($articles as $i => $a) {
+
 			if ($search) {
-				if (!strstr($a['name'],$search)) unset($articles[$i]);
+				if (!strstr($a['name'],$search)) {
+					unset($articles[$i]);
+				}
 			}
 			if ($this->category) {
 				if ($a['category'] != $this->category) unset($articles[$i]);
 			}
 		}
-		return $articles;
-		
 
+		return $articles;
 	}
 
 	public function scan () {
@@ -150,7 +152,6 @@ class Article {
 			return false;
 		}
 		file_put_contents($this->cacheFile,'');
-
 	}
 	
 	public function setCache ($articles) {
@@ -160,8 +161,4 @@ class Article {
 		file_put_contents($this->cacheFile, serialize($articles));
 	}
 	
-	
-	
-		
-		
 }
