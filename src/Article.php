@@ -82,6 +82,9 @@ class Article {
 	}
 
 	public function list ($search=false) {
+		if ($search) {
+			$this->category = false;
+		}
 		$articles = $this->getCache();
 		if (!$articles) {
 			$articles = $this->scan();
