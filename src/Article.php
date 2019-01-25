@@ -132,7 +132,9 @@ class Article {
 			if (!empty($content)) return unserialize($content);	
 		}
 
-		$results = $this->list();
+		$new = new self($this->path);
+                $results = $new->list();
+		
 		$categories = false;
 		foreach ($results as $r) {
 			$categories[$r['category']] = $r['category'];
