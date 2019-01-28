@@ -22,6 +22,11 @@ class Article {
 		$this->cacheFile = $this->path.'/cache.dat';
 		$this->categoriesFile = $this->path.'/categories.dat'; 
 	}
+	
+	public function delete ($file) {
+		$this->load($file);
+		unlink($this->currentFile);
+	}
 
 	public function load ($file) {
 
