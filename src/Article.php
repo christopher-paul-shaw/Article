@@ -30,7 +30,7 @@ class Article {
 		
 	}
 	
-	public function create ($filename = 'default', $content ='', $date = false, $data = false) {
+	public function create ($filename = 'default', $summary = false ,$content ='', $date = false, $data = false) {
 	
 		$file = $filename;
 
@@ -38,10 +38,14 @@ class Article {
 			$file = "{$date}__{$file}";	
 		}
 		
-		if (is_array($data)) {
-			$content.= "--DATA-- ".json_encode($data);
+		if ($summary) {
+			$content = "{$sumamry} --PAGE-- {$content}";	
 		}
 		
+		if (is_array($data)) {
+			$content.= " --DATA-- ".json_encode($data);
+		}		
+
 		file_put_contents($filename, $content);
 	}
 
