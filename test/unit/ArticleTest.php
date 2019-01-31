@@ -136,7 +136,7 @@ HEREDOC;
 		);
 		
 		$result = $article->load($filename);
-		$this->assertTrue($result);
+		$this->assertTrue($result != false);
 	}
 
 	public function testICanDeleteArticle () {
