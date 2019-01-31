@@ -122,5 +122,33 @@ HEREDOC;
 		$count = count($list);
 		$this->assertTrue($count > 0 && $count < $this->total_articles);
 	}
+	
+	public function testICanCreateArticle () {
+		$article = new Article(__DIR__.'/../../data/articles/');
+		$filename = $article->create (
+			'create_testfile',
+			'this is summary',
+			'this s some content',
+			'2018-01-01',
+			[
+				'category' => 'test',
+				'author' => 'test'
+			]
+		);
+		
+		$result = $article->load($filename);
+		$this->assertTrue($result != false);
+	}
+
+	public function testICanDeleteArticle () {
+		$article = new Article(__DIR__.'/../../data/articles/');
+   		$list = $article->list();
+   		$file = reset($list);
+   		$filename = $file['file'];
+		
+		$article->delete($filename);
+		$result = $article->load($filename);
+		$this->assertFalse($result);
+	}
 		
 }

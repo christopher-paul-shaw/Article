@@ -10,8 +10,7 @@ class Article {
 	public $cache_expires = 43200;
 
 	public function __construct ($path=false, $extentions=false) {
-	
-		if($path) {
+		if ($path) {
 			$this->path = $path;
 		}
 
@@ -22,9 +21,31 @@ class Article {
 		$this->cacheFile = $this->path.'/cache.dat';
 		$this->categoriesFile = $this->path.'/categories.dat'; 
 	}
+	
+	public function delete ($file) {	
+		$this->load($file);
+		unlink($this->currentFile);	
+	}
+	
+	public function create ($filename = 'default', $summary = false ,$content ='', $date = false, $data = false) {
+		$file = $filename;
+
+		if ($date) {
+			$file = "{$date}__{$file}";	
+		}
+		
+		if ($summary) {
+			$content = "{$sumamry} --PAGE-- {$content}";	
+		}
+		
+		if (is_array($data)) {
+			$content.= " --DATA-- ".json_encode($data);
+		}		
+
+		file_put_contents($filename, $content);
+	}
 
 	public function load ($file) {
-
 		$summary = '';
 		$content = '';
 		$date = '';
@@ -85,6 +106,7 @@ class Article {
 		if ($search) {
 			$this->category = false;
 		}
+		
 		$articles = $this->getCache();
 		if (!$articles) {
 			$articles = $this->scan();
