@@ -127,6 +127,7 @@ HEREDOC;
 		$article = new Article(__DIR__.'/../../data/articles/');
 		$filename = $article->create (
 			'create_testfile',
+			'this is summary',
 			'this s some content',
 			'2018-01-01',
 			[
