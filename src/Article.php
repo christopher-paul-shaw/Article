@@ -10,8 +10,7 @@ class Article {
 	public $cache_expires = 43200;
 
 	public function __construct ($path=false, $extentions=false) {
-	
-		if($path) {
+		if ($path) {
 			$this->path = $path;
 		}
 
@@ -23,15 +22,12 @@ class Article {
 		$this->categoriesFile = $this->path.'/categories.dat'; 
 	}
 	
-	public function delete ($file) {
-		
+	public function delete ($file) {	
 		$this->load($file);
-		unlink($this->currentFile);
-		
+		unlink($this->currentFile);	
 	}
 	
 	public function create ($filename = 'default', $summary = false ,$content ='', $date = false, $data = false) {
-	
 		$file = $filename;
 
 		if ($date) {
@@ -50,7 +46,6 @@ class Article {
 	}
 
 	public function load ($file) {
-
 		$summary = '';
 		$content = '';
 		$date = '';
@@ -111,6 +106,7 @@ class Article {
 		if ($search) {
 			$this->category = false;
 		}
+		
 		$articles = $this->getCache();
 		if (!$articles) {
 			$articles = $this->scan();
