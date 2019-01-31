@@ -32,7 +32,7 @@ class Article {
 	
 	public function create ($filename = 'default', $content ='', $date = false, $data = false) {
 	
-		$file = $filename.'.md';
+		$file = $filename;
 
 		if ($date) {
 			$file = "{$date}__{$file}";	
