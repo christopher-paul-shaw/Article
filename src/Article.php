@@ -24,8 +24,25 @@ class Article {
 	}
 	
 	public function delete ($file) {
+		
 		$this->load($file);
 		unlink($this->currentFile);
+		
+	}
+	
+	public function create ($filename = 'default', $content ='', $date = false, $data = false) {
+	
+		$file = $filename.'.md';
+
+		if ($date) {
+			$file = "{$date}__{$file}";	
+		}
+		
+		if (is_array($data)) {
+			$content.= "--DATA-- ".json_encode($data);
+		}
+		
+		file_put_contents($filename, $content);
 	}
 
 	public function load ($file) {
